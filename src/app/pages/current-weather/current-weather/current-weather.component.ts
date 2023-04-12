@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { GeolocationErrorCode } from '../../../models/enums/geolocation-error-code.enum';
+import { WeatherService } from '../../../services/weather.service';
+import { Observable } from 'rxjs';
+import { WeatherData } from '../../../models/interfaces/weather-data.interface';
 
 @Component({
   selector: 'app-current-weather',
@@ -8,25 +11,60 @@ import { GeolocationErrorCode } from '../../../models/enums/geolocation-error-co
   styleUrls: ['./current-weather.component.scss'],
 })
 export class CurrentWeatherComponent implements OnInit {
-  public locationPermissionDenied = false;
+  public errorMessage: string | undefined;
+  public weather$: Observable<WeatherData> | undefined;
+
   private userPosition: GeolocationPosition | undefined;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private weatherService: WeatherService
+  ) {}
 
   ngOnInit(): void {
-    this.getUserCoordinates();
+    this.getUserCoordinates().then(() => this.getWeatherData());
   }
 
-  private getUserCoordinates() {
-    this.userService
+  private getUserCoordinates(): Promise<GeolocationPosition> {
+    return this.userService
       .getUserCoordinates()
       .then((position) => {
         this.userPosition = position;
+        return position;
       })
       .catch((error) => {
-        this.userService.handleGeolocationError(error?.code, error?.message);
-        this.locationPermissionDenied =
-          error.code === GeolocationErrorCode.PERMISSION_DENIED;
+        this.handleGeolocationError(error.code, error.message);
+        throw error;
       });
+  }
+
+  private handleGeolocationError(
+    errorCode: GeolocationErrorCode,
+    errorMessage: string
+  ): void {
+    this.userService.handleGeolocationError(errorCode, errorMessage);
+
+    switch (errorCode) {
+      case GeolocationErrorCode.PERMISSION_DENIED:
+        this.errorMessage =
+          'Please enable location services in your browser settings to use this app. Refresh the page when you are done.';
+        break;
+      default:
+        this.errorMessage = errorMessage
+          ? errorMessage
+          : 'Something went wrong. Please try again later.';
+    }
+  }
+
+  private getWeatherData() {
+    if (this.userPosition === undefined) {
+      this.errorMessage = 'Something went wrong. Please try again later.';
+      return;
+    }
+
+    this.weather$ = this.weatherService.getCurrentWeather(
+      this.userPosition.coords.latitude,
+      this.userPosition.coords.longitude
+    );
   }
 }

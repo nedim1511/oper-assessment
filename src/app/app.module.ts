@@ -6,10 +6,11 @@ import { CurrentWeatherComponent } from './pages/current-weather/current-weather
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { ErrorAlertComponent } from './shared/error-alert/error-alert/error-alert.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, CurrentWeatherComponent, ErrorAlertComponent],
-  imports: [BrowserModule, RouterModule, AppRoutingModule],
+  imports: [BrowserModule, RouterModule, AppRoutingModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })

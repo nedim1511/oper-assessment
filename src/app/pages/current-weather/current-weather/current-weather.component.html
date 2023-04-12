@@ -1,4 +1,52 @@
+<!-- Location Problem -->
 <app-error-alert
   *ngIf="errorMessage"
   [message]="errorMessage"
 ></app-error-alert>
+
+<!-- Loading Spinner -->
+<ng-template #loading>
+  <div class="spinner-container">
+    <div class="spinner"></div>
+  </div>
+</ng-template>
+
+<!-- Weather Widget -->
+<div
+  class="weather-widget"
+  *ngIf="weather$ | async as weatherData; else loading"
+>
+  <!-- Weather Widget Title -->
+  <h2>Current Weather in {{ weatherData.name }}</h2>
+  <div class="weather-info">
+    <!-- Weather Icon -->
+    <div class="weather-icon" *ngIf="weatherData.weather[0]">
+      <img
+        src="{{ openWeatherMapBaseImageUrl + weatherData.weather[0].icon }}.png"
+        alt="weather icon"
+      />
+    </div>
+
+    <!-- Weather Details -->
+    <div class="weather-details">
+      <p>
+        <span class="detail-label">Weather: </span>
+        <span class="weather-description" *ngIf="weatherData.weather[0]">{{
+          weatherData.weather[0].description | titlecase
+        }}</span>
+      </p>
+      <p>
+        <span class="detail-label">Temperature: </span>
+        <span class="temperature">{{ weatherData.main.temp }}°C</span>
+      </p>
+      <p>
+        <span class="detail-label">Humidity: </span>
+        <span class="humidity">{{ weatherData.main.humidity }}%</span>
+      </p>
+      <p>
+        <span class="detail-label">Wind Speed: </span>
+        <span class="wind-speed">{{ weatherData.wind.speed }} m/s</span>
+      </p>
+    </div>
+  </div>
+</div>

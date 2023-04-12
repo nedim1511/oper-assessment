@@ -11,8 +11,10 @@ import { WeatherData } from '../../../models/interfaces/weather-data.interface';
   styleUrls: ['./current-weather.component.scss'],
 })
 export class CurrentWeatherComponent implements OnInit {
+  public isLoading = false;
   public errorMessage: string | undefined;
   public weather$: Observable<WeatherData> | undefined;
+  public openWeatherMapBaseImageUrl = 'https://openweathermap.org/img/wn/';
 
   private userPosition: GeolocationPosition | undefined;
 
@@ -26,6 +28,7 @@ export class CurrentWeatherComponent implements OnInit {
   }
 
   private getUserCoordinates(): Promise<GeolocationPosition> {
+    this.isLoading = true;
     return this.userService
       .getUserCoordinates()
       .then((position) => {
@@ -34,6 +37,7 @@ export class CurrentWeatherComponent implements OnInit {
       })
       .catch((error) => {
         this.handleGeolocationError(error.code, error.message);
+        this.isLoading = false;
         throw error;
       });
   }
@@ -58,6 +62,7 @@ export class CurrentWeatherComponent implements OnInit {
 
   private getWeatherData() {
     if (this.userPosition === undefined) {
+      this.isLoading = false;
       this.errorMessage = 'Something went wrong. Please try again later.';
       return;
     }

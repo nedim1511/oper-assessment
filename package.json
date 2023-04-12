@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "format": "prettier --write '**/*.{ts,html,scss}'",
-    "lint": "eslint . --ext .ts,.scss",
+    "lint": "eslint . --ext .ts",
     "prepare": "husky install"
   },
   "private": true,

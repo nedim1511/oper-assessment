@@ -4,11 +4,16 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private navigator: Navigator) {}
 
   getUserCoordinates(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
-      this.navigator.geolocation.getCurrentPosition(resolve, reject);
+      navigator.geolocation.getCurrentPosition(resolve, reject);
     });
+  }
+
+  handleGeolocationError(code = 0, message = 'Unknown'): void {
+    alert(
+      'Could not retrieve data because of error: ' + message + ' (' + code + ')'
+    );
   }
 }

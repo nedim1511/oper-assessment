@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
+import { GeolocationErrorCode } from '../../../models/enums/geolocation-error-code.enum';
 
 @Component({
   selector: 'app-current-weather',
@@ -7,6 +8,7 @@ import { UserService } from '../../../services/user.service';
   styleUrls: ['./current-weather.component.scss'],
 })
 export class CurrentWeatherComponent implements OnInit {
+  public locationPermissionDenied = false;
   private userPosition: GeolocationPosition | undefined;
 
   constructor(private userService: UserService) {}
@@ -20,10 +22,11 @@ export class CurrentWeatherComponent implements OnInit {
       .getUserCoordinates()
       .then((position) => {
         this.userPosition = position;
-        console.log(this.userPosition);
       })
       .catch((error) => {
-        console.log('Error getting location', error);
+        this.userService.handleGeolocationError(error?.code, error?.message);
+        this.locationPermissionDenied =
+          error.code === GeolocationErrorCode.PERMISSION_DENIED;
       });
   }
 }

@@ -1,1 +1,4 @@
-<p>current-weather works!</p>
+<app-error-alert
+  *ngIf="locationPermissionDenied"
+  message="Please enable location services in your browser settings to use this app. Refresh the page when you're done."
+></app-error-alert>

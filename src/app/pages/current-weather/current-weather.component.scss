@@ -50,35 +50,3 @@ h2 {
 .weather-details p {
   margin-bottom: 10px;
 }
-
-/* Loading spinner */
-.spinner-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
-  z-index: 9999; /* ensure spinner is on top of other elements */
-}
-
-.spinner {
-  border: 2px solid #ccc;
-  border-top-color: #333;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}

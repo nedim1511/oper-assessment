@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../services/user.service';
-import { GeolocationErrorCode } from '../../../models/enums/geolocation-error-code.enum';
-import { WeatherService } from '../../../services/weather.service';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { WeatherData } from '../../../models/interfaces/weather-data.interface';
+import { UserService } from '../../services/user.service';
+import { WeatherService } from '../../services/weather.service';
+import { GeolocationErrorCode } from '../../models/enums/geolocation-error-code.enum';
+import { WeatherForecastListItemData } from '../../models/interfaces/weather-forecast-data.interface';
 
 @Component({
-  selector: 'app-current-weather',
-  templateUrl: './current-weather.component.html',
-  styleUrls: ['./current-weather.component.scss'],
+  selector: 'app-forecast-weather',
+  templateUrl: './forecast-weather.component.html',
+  styleUrls: ['./forecast-weather.component.scss'],
 })
-export class CurrentWeatherComponent implements OnInit {
+export class ForecastWeatherComponent {
   public isLoading = false;
   public errorMessage: string | undefined;
-  public weather$: Observable<WeatherData> | undefined;
   public openWeatherMapBaseImageUrl = 'https://openweathermap.org/img/wn/';
+  public weatherForecast$:
+    | Observable<WeatherForecastListItemData[]>
+    | undefined;
 
   private userPosition: GeolocationPosition | undefined;
 
@@ -67,7 +69,7 @@ export class CurrentWeatherComponent implements OnInit {
       return;
     }
 
-    this.weather$ = this.weatherService.getCurrentWeather(
+    this.weatherForecast$ = this.weatherService.getFourDayForecast(
       this.userPosition.coords.latitude,
       this.userPosition.coords.longitude
     );

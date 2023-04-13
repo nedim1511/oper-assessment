@@ -1,0 +1,74 @@
+<!-- Location Problem -->
+<app-error-alert
+  *ngIf="errorMessage"
+  [message]="errorMessage"
+></app-error-alert>
+
+<!-- Loading Spinner -->
+<ng-template #loading>
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>
+
+<div class="forecast" *ngIf="weatherForecast$ | async as weatherForecast">
+  <h2 class="title">{{ weatherForecast.length }}-Day Weather Forecast</h2>
+  <ul class="list">
+    <li *ngFor="let forecast of weatherForecast" class="item">
+      <h3 class="date">{{ forecast.dt_txt | date : "EEE, MMM d" }}</h3>
+      <div class="details">
+        <div class="detail">
+          <img
+            class="icon"
+            [src]="
+              openWeatherMapBaseImageUrl + forecast.weather[0].icon + '.png'
+            "
+            [alt]="forecast.weather[0].description"
+          />
+          <span class="label">Description:</span>
+          <span class="value">{{
+            forecast.weather[0].description | titlecase
+          }}</span>
+        </div>
+        <div class="detail">
+          <span class="label">Temperature:</span>
+          <span class="value">{{ forecast.main.temp }} &#8451;</span>
+        </div>
+        <div class="detail">
+          <span class="label">Feels Like:</span>
+          <span class="value">{{ forecast.main.feels_like }} &#8451;</span>
+        </div>
+        <div class="detail">
+          <span class="label">Minimum Temperature:</span>
+          <span class="value">{{ forecast.main.temp_min }} &#8451;</span>
+        </div>
+        <div class="detail">
+          <span class="label">Maximum Temperature:</span>
+          <span class="value">{{ forecast.main.temp_max }} &#8451;</span>
+        </div>
+        <div class="detail">
+          <span class="label">Pressure:</span>
+          <span class="value">{{ forecast.main.pressure }} hPa</span>
+        </div>
+        <div class="detail">
+          <span class="label">Humidity:</span>
+          <span class="value">{{ forecast.main.humidity }}%</span>
+        </div>
+        <div class="detail">
+          <span class="label">Wind Speed:</span>
+          <span class="value">{{ forecast.wind.speed }} m/s</span>
+        </div>
+        <div class="detail">
+          <span class="label">Wind Direction:</span>
+          <span class="value">{{ forecast.wind.deg }}&deg;</span>
+        </div>
+        <div class="detail">
+          <span class="label">Visibility:</span>
+          <span class="value">{{ forecast.visibility }} m</span>
+        </div>
+        <div class="detail">
+          <span class="label">Probability of Precipitation:</span>
+          <span class="value">{{ forecast.pop }}</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

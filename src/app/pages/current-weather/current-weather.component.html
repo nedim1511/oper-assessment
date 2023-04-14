@@ -1,20 +1,12 @@
-<!-- Location Problem -->
 <app-error-alert
   *ngIf="errorMessage"
   [message]="errorMessage"
 ></app-error-alert>
 
-<!-- Loading Spinner -->
-<ng-template #loading>
-  <app-loading-spinner></app-loading-spinner>
-</ng-template>
-
-<!-- Weather Widget -->
 <div
   class="weather-widget"
   *ngIf="weather$ | async as weatherData; else loading"
 >
-  <!-- Weather Widget Title -->
   <h2>Current Weather in {{ weatherData.name }}</h2>
   <div class="weather-info">
     <!-- Weather Icon -->
@@ -25,7 +17,6 @@
       />
     </div>
 
-    <!-- Weather Details -->
     <div class="weather-details">
       <p>
         <span class="detail-label">Weather: </span>
@@ -45,6 +36,13 @@
         <span class="detail-label">Wind Speed: </span>
         <span class="wind-speed">{{ weatherData.wind.speed }} m/s</span>
       </p>
+      <p>
+        <a routerLink="four-days">View weather for upcoming days</a>
+      </p>
     </div>
   </div>
 </div>
+
+<ng-template #loading>
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+</ng-template>

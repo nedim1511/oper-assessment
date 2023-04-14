@@ -15,20 +15,29 @@ export class WeatherService {
   constructor(private http: HttpClient) {}
 
   getCurrentWeather(lat: number, lon: number): Observable<WeatherData> {
-    const url = `${this.API_URL}/weather?lat=${lat}&lon=${lon}&appid=${this.API_KEY}`;
+    const url = `${this.API_URL}/weather?lat=${lat}&lon=${lon}&appid=${this.API_KEY}&units=metric`;
     return this.http.get<WeatherData>(url);
   }
 
-  getFourDayForecast(lat: number, lon: number): Observable<WeatherForecastListItemData[]> {
-    const url = `${this.API_URL}/forecast?lat=${lat}&lon=${lon}&appid=${this.API_KEY}`;
-    return this.http.get<{ list: WeatherForecastListItemData[] }>(url).pipe(
-      map((response) => this.filterForecastForFourDays(response))
-    );
+  getFourDayForecast(
+    lat: number,
+    lon: number
+  ): Observable<WeatherForecastListItemData[]> {
+    const url = `${this.API_URL}/forecast?lat=${lat}&lon=${lon}&appid=${this.API_KEY}&units=metric`;
+    return this.http
+      .get<{ list: WeatherForecastListItemData[] }>(url)
+      .pipe(map((response) => this.filterForecastForFourDays(response)));
   }
 
-  private filterForecastForFourDays(response: { list: WeatherForecastListItemData[] }): WeatherForecastListItemData[] {
+  private filterForecastForFourDays(response: {
+    list: WeatherForecastListItemData[];
+  }): WeatherForecastListItemData[] {
     const now = new Date();
-    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const tomorrow = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() + 1
+    );
     const days = this.generateDatesForFourDaysFromTomorrow(tomorrow);
 
     const filteredData = [];
@@ -56,11 +65,17 @@ export class WeatherService {
     return days;
   }
 
-  private getItemsForDay(list: WeatherForecastListItemData[], day: Date): WeatherForecastListItemData[] {
+  private getItemsForDay(
+    list: WeatherForecastListItemData[],
+    day: Date
+  ): WeatherForecastListItemData[] {
     return list.filter((item) => {
       const itemDate = new Date(item.dt_txt);
-      return itemDate.getFullYear() === day.getFullYear() && itemDate.getMonth() === day.getMonth() && itemDate.getDate() === day.getDate();
+      return (
+        itemDate.getFullYear() === day.getFullYear() &&
+        itemDate.getMonth() === day.getMonth() &&
+        itemDate.getDate() === day.getDate()
+      );
     });
   }
-
 }

@@ -1,6 +1,10 @@
+@import "../../../mixins";
+
+$forecast-max-width: 80%;
+
 .forecast {
   margin: 2rem auto;
-  max-width: 80%;
+  max-width: $forecast-max-width;
 
   & .title {
     font-size: 2rem;
@@ -17,11 +21,8 @@
     padding: 0;
 
     & .item {
-      background-color: #e6f2ff;
-      border-radius: 1rem;
-      box-shadow: 0 0.1rem 0.5rem rgba(0, 0, 0, 0.2);
+      @include rounded-box();
       margin-bottom: 2rem;
-      padding: 2rem;
       width: 100%;
       max-width: 100%;
 
@@ -38,7 +39,6 @@
 
         & .detail {
           flex-basis: 100%;
-          margin-right: 1rem;
           margin-bottom: 0.5rem;
           display: flex;
           align-items: center;

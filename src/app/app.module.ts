@@ -9,6 +9,7 @@ import { ErrorAlertComponent } from './shared/error-alert/error-alert.component'
 import { HttpClientModule } from '@angular/common/http';
 import { ForecastWeatherComponent } from './pages/forecast-weather/forecast-weather.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { ForecastWeatherWidgetComponent } from './components/forecast-weather-widget/forecast-weather-widget.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
     ErrorAlertComponent,
     ForecastWeatherComponent,
     LoadingSpinnerComponent,
+    ForecastWeatherWidgetComponent,
   ],
   imports: [BrowserModule, RouterModule, AppRoutingModule, HttpClientModule],
   providers: [],

@@ -12,7 +12,6 @@ import { WeatherForecastListItemData } from '../../models/interfaces/weather-for
 export class ForecastWeatherComponent implements OnInit {
   public isLoading = true;
   public errorMessage: string | undefined;
-  public openWeatherMapBaseImageUrl = 'https://openweathermap.org/img/wn/';
   public weatherForecast$:
     | Observable<WeatherForecastListItemData[]>
     | undefined;
